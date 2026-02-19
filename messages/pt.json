@@ -3,9 +3,52 @@
         "home": "Início",
         "howItWorks": "Como funciona",
         "pricing": "Planos",
-        "login": "Entrar"
+        "login": "Entrar",
+        "contact": "Contato"
+    },
+    "Hero": {
+        "badge": "#1 Baixador de Vídeos Sociais",
+        "titleStart": "Baixe Vídeos",
+        "titleEnd": "Sem Marca D'água",
+        "description": "Rápido, grátis e ilimitado. Baixe do TikTok, Instagram Reels, YouTube Shorts e muito mais em qualidade HD.",
+        "supportedPlatforms": "Plataformas Suportadas"
+    },
+    "Input": {
+        "placeholder": "Cole o link do vídeo aqui (TikTok, Instagram, etc.)",
+        "paste": "Colar",
+        "downloading": "Processando..."
+    },
+    "Result": {
+        "downloadVideo": "Baixar Vídeo",
+        "downloadAudio": "Baixar Áudio",
+        "by": "por {author}",
+        "noPreview": "Sem Prévia",
+        "freeMode": "Modo Grátis",
+        "proBadge": "PRO",
+        "downloadHD": "Baixar em HD",
+        "downloadReady": "Download Pronto!",
+        "preparingDownload": "Preparando Download...",
+        "readyMessage": "Seu arquivo está pronto e quentinho.",
+        "waitMessage": "Usuários grátis esperam 20 segundos. Vire Pro para baixar instantaneamente.",
+        "downloadNow": "Baixar Agora",
+        "skipWait": "Pule a espera com o Pro"
     },
     "HowItWorksPage": {
+        "title": "Como Baixar",
+        "step1Title": "Copie o Link",
+        "step1Desc": "Encontre o vídeo que deseja baixar e copie o link.",
+        "step2Title": "Cole o Link",
+        "step2Desc": "Cole o link no campo de entrada acima.",
+        "step3Title": "Baixar",
+        "step3Desc": "Clique no botão de download e salve seu vídeo."
+    },
+    "ContactPage": {
+        "title": "Entre em Contato",
+        "desc": "Tem dúvidas ou sugestões? Adoraríamos ouvir você.",
+        "emailLabel": "Nosso E-mail",
+        "copied": "Copiado!"
+    },
+    "PricingPage": {
         "title": "Desbloqueie o TapDown",
         "subtitle": "Downloads sem limites. Obtenha a melhor qualidade, instantaneamente.",
         "freeTitle": "Grátis",
