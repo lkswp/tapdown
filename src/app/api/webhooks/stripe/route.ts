@@ -11,12 +11,18 @@ export async function POST(req: Request) {
     let event: Stripe.Event;
 
     try {
+        // DEBUG LOGGING
+        const secret = process.env.STRIPE_WEBHOOK_SECRET || "";
+        console.log(`[STRIPE WEBHOOK] Secret loaded: ${secret.length > 0}, Starts with: ${secret.substring(0, 8)}...`);
+        console.log(`[STRIPE WEBHOOK] Signature: ${signature ? "Present" : "Missing"}, Length: ${signature?.length}`);
+
         event = stripe.webhooks.constructEvent(
             body,
             signature,
             process.env.STRIPE_WEBHOOK_SECRET!
         );
     } catch (error: any) {
+        console.error(`[STRIPE WEBHOOK ERROR] Message: ${error.message}`);
         return new NextResponse(`Webhook Error: ${error.message}`, { status: 400 });
     }
 
