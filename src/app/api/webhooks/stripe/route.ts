@@ -5,8 +5,12 @@ import { clerkClient } from "@clerk/nextjs/server";
 import Stripe from "stripe";
 
 export async function POST(req: Request) {
-    const body = await req.text();
     const signature = (await headers()).get("Stripe-Signature") as string;
+
+    // Read raw body as ArrayBuffer to avoid encoding issues
+    const arrayBuffer = await req.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    const body = buffer.toString("utf-8");
 
     let event: Stripe.Event;
 
