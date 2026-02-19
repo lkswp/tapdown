@@ -2,7 +2,9 @@
 
 // @ts-ignore
 const { instagramGetUrl } = require("instagram-url-direct")
-import ytdl from "@distube/ytdl-core"
+const YTDlpWrap = require('yt-dlp-wrap').default;
+const path = require('path');
+// import ytdl from "@distube/ytdl-core" // Removed
 
 export interface VideoData {
     url: string;
@@ -88,76 +90,79 @@ async function downloadInstagram(url: string): Promise<{ success: boolean; data?
     }
 }
 
-// Helper to fetch from Cobalt API
-async function downloadFromCobalt(url: string, quality: '480' | 'max' = 'max', isAudioOnly: boolean = false): Promise<string | undefined> {
-    try {
-        const response = await fetch("https://api.cobalt.tools/api/json", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-                "User-Agent": "TapDown/1.0"
-            },
-            body: JSON.stringify({
-                url: url,
-                vQuality: quality,
-                isAudioOnly: isAudioOnly,
-            })
-        });
-
-        const data = await response.json();
-        if (data.status === "error" || !data.url) {
-            console.error(`Cobalt API error for ${quality}:`, data);
-            return undefined;
-        }
-        return data.url;
-    } catch (e) {
-        console.error(`Cobalt Fetch Error (${quality}):`, e);
-        return undefined;
-    }
-}
-
 async function downloadYouTube(url: string): Promise<{ success: boolean; data?: VideoData; error?: string }> {
     try {
-        // Cobalt handles validation, but we can keep a basic check
-        if (!url.includes("youtube.com") && !url.includes("youtu.be")) {
-            return { success: false, error: "Invalid YouTube URL" };
+        console.log(`Downloading YouTube video with yt-dlp: ${url}`);
+
+        // Locate yt-dlp binary
+        const binaryName = process.platform === 'win32' ? 'yt-dlp.exe' : 'yt-dlp';
+        const binaryPath = path.join(process.cwd(), 'bin', binaryName);
+
+        const ytDlpWrap = new YTDlpWrap(binaryPath);
+
+        // Use Node.js as the JS runtime
+        const nodePath = process.execPath;
+
+        const args = [
+            url,
+            '--dump-json',
+            '--no-playlist',
+            '--js-runtimes', `node:${nodePath}`
+        ];
+
+        // Ensure we retrieve formats that have both video and audio if possible (pre-merged)
+        // or just rely on 'best' which might be pre-merged 720p/360p.
+        // We'll let yt-dlp decide default best, and we pick from available formats in JSON.
+
+        const stdout = await ytDlpWrap.execPromise(args);
+        const metadata = JSON.parse(stdout);
+
+        if (!metadata) {
+            return { success: false, error: "Failed to fetch video metadata from yt-dlp." };
         }
 
-        // Parallel fetch for SD, HD, and Audio to make it fast
-        const [sdUrl, hdUrl, audioUrl] = await Promise.all([
-            downloadFromCobalt(url, '480'),
-            downloadFromCobalt(url, 'max'),
-            downloadFromCobalt(url, 'max', true)
-        ]);
+        // Find best format with video+audio
+        // mp4 preferred for compatibility
+        let formats = metadata.formats || [];
 
-        if (!sdUrl && !hdUrl) {
-            return { success: false, error: "Failed to fetch video from Cobalt API. Content might be restricted." };
+        // 1. Try to find a format with both vcodec and acodec (pre-merged)
+        let bestFormat = formats.find((f: any) => f.vcodec !== 'none' && f.acodec !== 'none' && f.ext === 'mp4' && (f.format_id === '22' || f.height >= 720)); // HD 720p
+
+        if (!bestFormat) {
+            // Fallback to SD with audio
+            bestFormat = formats.find((f: any) => f.vcodec !== 'none' && f.acodec !== 'none' && f.ext === 'mp4');
         }
 
-        // We need metadata. Cobalt returns it sometimes, but let's try to get basic info if possible or use fallbacks
-        // Since we are ditching ytdl, we might lose some metadata if Cobalt doesn't provide it in this endpoint mode.
-        // For now, let's return generic title if missing, or we can use ytdl JUST for metadata (lightweight) if it works, 
-        // but ytdl getInfo might also be blocked. Let's assume Cobalt works for now.
+        // If still nothing, take ANY format with both
+        if (!bestFormat) {
+            bestFormat = formats.find((f: any) => f.vcodec !== 'none' && f.acodec !== 'none');
+        }
 
-        // Note: Cobalt's /api/json response doesn't always strictly return metadata in the simple mode. 
-        // We will mock the title/author if missing for now to prioritize the download working.
+        // 2. Find audio only format
+        const audioFormat = formats.find((f: any) => f.acodec !== 'none' && f.vcodec === 'none' && (f.ext === 'm4a' || f.ext === 'mp3'));
+
+        if (!bestFormat) {
+            return { success: false, error: "No suitable video format found." };
+        }
 
         return {
             success: true,
             data: {
                 platform: 'youtube',
-                url: sdUrl || hdUrl!, // safe fallback
-                hdUrl: hdUrl || sdUrl,
-                audioUrl: audioUrl,
-                thumbnail: `https://img.youtube.com/vi/${getVideoId(url)}/hqdefault.jpg`, // Manual thumbnail
-                title: "YouTube Video", // Cobalt doesn't always give this in simple JSON mode
-                author: "YouTube Creator"
+                url: bestFormat.url,
+                hdUrl: bestFormat.url, // yt-dlp usually gives best available as single file
+                audioUrl: audioFormat?.url,
+                thumbnail: metadata.thumbnail,
+                title: metadata.title,
+                author: metadata.uploader
             }
         };
+
     } catch (e: any) {
-        console.error("YouTube Fetch Error:", e);
-        return { success: false, error: "Failed to process YouTube video." };
+        console.error("YouTube Fetch Error (yt-dlp):", e);
+        // Clean up error message
+        const msg = e.stderr || e.message || "Unknown error";
+        return { success: false, error: `Failed to process YouTube video.` };
     }
 }
 
