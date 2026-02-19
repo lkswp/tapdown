@@ -19,7 +19,7 @@ interface VideoResultProps {
 }
 
 export const VideoResult: React.FC<VideoResultProps> = ({ data }) => {
-    const t = useTranslations('VideoResult');
+    const t = useTranslations('Result');
 
     const handleDownload = async (usage: 'video' | 'audio') => {
         // Determine the correct URL to use
