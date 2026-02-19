@@ -2,52 +2,13 @@
     "Header": {
         "home": "Home",
         "howItWorks": "How it works",
-        "contact": "Contact"
+        "contact": "Contact",
+        "pricing": "Pricing",
+        "login": "Login"
     },
-    "HowItWorksPage": {
-        "title": "How to Download",
-        "step1Title": "Copy the Link",
-        "step1Desc": "Find the video you want to download and copy its link.",
-        "step2Title": "Paste the Link",
-        "step2Desc": "Paste the link into the input field above.",
-        "step3Title": "Download",
-        "step3Desc": "Click the download button and save your video."
-    },
-    "ContactPage": {
-        "title": "Get in Touch",
-        "desc": "Have questions or suggestions? We'd love to hear from you.",
-        "emailLabel": "Our Email",
-        "copied": "Copied!"
-    },
-    "Hero": {
-        "badge": "#1 Social Media Downloader",
-        "titleStart": "Download Videos",
-        "titleEnd": "Without Watermarks",
-        "description": "Fast, free, and unlimited. Download from TikTok, Instagram Reels, YouTube Shorts, and more in classic HD quality.",
-        "supportedPlatforms": "Supported Platforms"
-    },
-    "Input": {
-        "placeholder": "Paste video URL here (TikTok, Instagram, etc.)",
-        "paste": "Paste",
-        "downloading": "Processing..."
-    },
-    "Result": {
-        "downloadVideo": "Download Video",
-        "downloadAudio": "Download Audio",
-        "by": "by {author}",
-        "noPreview": "No Preview",
-        "freeMode": "Free Mode",
-        "proBadge": "PRO",
-        "downloadHD": "Download HD",
-        "downloadReady": "Download Ready!",
-        "preparingDownload": "Preparing Download...",
-        "readyMessage": "Your file is ready nicely baked.",
-        "waitMessage": "Free users wait 20 seconds. Upgrade to Pro for instant downloads.",
-        "downloadNow": "Download Now",
-        "skipWait": "Skip the wait with Pro"
-    },
+    // ...
     "PricingPage": {
-        "title": "Unlock <span class='text-primary'>TapDown Pro</span>",
+        "title": "Unlock TapDown",
         "subtitle": "Downloads without limits. Get the best quality, instantly.",
         "freeTitle": "Free",
         "freeDesc": "Basic downloading for casual users",
