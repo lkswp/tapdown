@@ -9,8 +9,11 @@ import Image from "next/image"
 
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs"
 import { LogIn, Sparkles } from "lucide-react"
+import { currentUser } from "@clerk/nextjs/server"
 
-export function Header() {
+export default async function Header() {
+    const user = await currentUser();
+    const isPro = user?.publicMetadata?.isPro === true;
     const t = useTranslations('Header')
 
     return (
@@ -46,19 +49,28 @@ export function Header() {
                         <SignInButton mode="modal">
                             <Button variant="ghost" size="sm" className="gap-2">
                                 <LogIn className="h-4 w-4" />
-                                Login
+                                <span>{t('login')}</span>
                             </Button>
                         </SignInButton>
                     </SignedOut>
 
                     <SignedIn>
-                        <UserButton
-                            appearance={{
-                                elements: {
-                                    avatarBox: "h-9 w-9 ring-2 ring-primary/20 hover:ring-primary/50 transition-all"
-                                }
-                            }}
-                        />
+                        <div className="flex items-center gap-3">
+                            <UserButton
+                                appearance={{
+                                    elements: {
+                                        avatarBox: "h-9 w-9 ring-2 ring-primary/20 hover:ring-primary/50 transition-all"
+                                    }
+                                }}
+                            />
+                            {/* Pro Badge */}
+                            {isPro && (
+                                <div className="hidden md:flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-gradient-to-r from-yellow-500/10 to-amber-500/10 border border-yellow-500/20">
+                                    <Sparkles className="w-3 h-3 text-yellow-500" />
+                                    <span className="text-xs font-bold text-yellow-500 tracking-wider">PRO</span>
+                                </div>
+                            )}
+                        </div>
                     </SignedIn>
                 </div>
             </div>
