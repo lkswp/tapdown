@@ -1,7 +1,7 @@
 "use server"
 
 // @ts-ignore
-const instagramGetUrl = require("instagram-url-direct")
+const { instagramGetUrl } = require("instagram-url-direct")
 import ytdl from "@distube/ytdl-core"
 
 export interface VideoData {
@@ -77,9 +77,9 @@ async function downloadInstagram(url: string): Promise<{ success: boolean; data?
         } else {
             return { success: false, error: "No video found in Instagram link" };
         }
-    } catch (e) {
+    } catch (e: any) {
         console.error("Instagram Fetch Error:", e);
-        return { success: false, error: "Failed to fetch from Instagram." };
+        return { success: false, error: `Failed to fetch from Instagram: ${e.message || "Unknown error"}` };
     }
 }
 
@@ -89,7 +89,12 @@ async function downloadYouTube(url: string): Promise<{ success: boolean; data?: 
             return { success: false, error: "Invalid YouTube URL" };
         }
 
-        const info = await ytdl.getInfo(url);
+        // Try to use an agent to avoid 403s
+        const agent = ytdl.createAgent([
+            { name: "cookie", value: "VISITOR_INFO1_LIVE=; YSC=;" }
+        ]);
+
+        const info = await ytdl.getInfo(url, { agent });
         const format = ytdl.chooseFormat(info.formats, { quality: 'highest' });
 
         const thumbnail = info.videoDetails.thumbnails.length > 0
@@ -106,8 +111,9 @@ async function downloadYouTube(url: string): Promise<{ success: boolean; data?: 
                 author: info.videoDetails.author.name
             }
         };
-    } catch (e) {
-        console.error("YouTube Fetch Error:", e);
-        return { success: false, error: "Failed to fetch from YouTube" };
+    } catch (e: any) {
+        console.error("YouTube Fetch Error Stack:", e.stack);
+        console.error("YouTube Fetch Error Message:", e.message);
+        return { success: false, error: `Failed to fetch from YouTube: ${e.message}` };
     }
 }

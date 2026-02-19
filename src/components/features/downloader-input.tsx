@@ -62,7 +62,7 @@ export function DownloaderInput({ onDownload, isLoading }: DownloaderInputProps)
     return (
         <form onSubmit={handleSubmit} className="relative w-full max-w-2xl mx-auto">
             <div className="relative flex items-center group">
-                <div className="absolute left-4 text-muted-foreground transition-colors duration-300">
+                <div className="absolute left-4 transition-colors duration-300 z-10">
                     {getPlatformIcon()}
                 </div>
                 <Input
