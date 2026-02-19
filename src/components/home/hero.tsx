@@ -36,10 +36,10 @@ export function Hero() {
                     </span>
                 </h1>
 
-                <div className="w-full relative group">
-                    {/* Glow effect */}
-                    <div className="absolute -inset-1 bg-gradient-to-r from-primary to-accent rounded-3xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
-                    <div className="relative">
+                <div className="w-full relative group max-w-2xl mx-auto">
+                    {/* Impeccable Glow effect */}
+                    <div className="absolute -inset-1 bg-gradient-to-r from-primary via-accent to-primary rounded-3xl blur-xl opacity-20 group-hover:opacity-60 transition duration-1000 group-hover:duration-300 animate-pulse"></div>
+                    <div className="relative transform group-hover:-translate-y-1 transition-transform duration-300">
                         <Downloader />
                     </div>
                 </div>
