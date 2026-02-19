@@ -7,12 +7,11 @@ import { LanguageSwitcher } from "@/components/features/language-switcher"
 import { useTranslations } from "next-intl"
 import Image from "next/image"
 
-import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs"
+import { SignInButton, SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs"
 import { LogIn, Sparkles } from "lucide-react"
-import { currentUser } from "@clerk/nextjs/server"
 
-export default async function Header() {
-    const user = await currentUser();
+export function Header() {
+    const { user } = useUser();
     const isPro = user?.publicMetadata?.isPro === true;
     const t = useTranslations('Header')
 
