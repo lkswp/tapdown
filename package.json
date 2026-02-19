@@ -13,6 +13,9 @@
     "@clerk/localizations": "^3.36.0",
     "@clerk/nextjs": "^6.38.0",
     "@distube/ytdl-core": "^4.16.12",
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.5.0",
+    "@types/three": "^0.183.0",
     "axios": "^1.13.5",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -29,6 +32,7 @@
     "stripe": "^20.3.1",
     "tailwind-merge": "^3.5.0",
     "tailwindcss-animate": "^1.0.7",
+    "three": "^0.183.0",
     "yt-dlp-wrap": "^2.3.12"
   },
   "devDependencies": {
