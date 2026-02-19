@@ -94,11 +94,28 @@ async function downloadYouTube(url: string): Promise<{ success: boolean; data?: 
             return { success: false, error: "Invalid YouTube URL" };
         }
 
-        // Try without explicit agent first to avoid bot detection
-        const info = await ytdl.getInfo(url);
-        const videoFormat = ytdl.chooseFormat(info.formats, { quality: 'highest' });
+        // Use a real browser User-Agent to avoid "Sign in to confirm you’re not a bot"
+        const requestOptions = {
+            headers: {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+                "Accept-Language": "en-US,en;q=0.9",
+            }
+        };
 
-        // Find audio only format
+        const info = await ytdl.getInfo(url, { requestOptions });
+
+        // SD Quality: Prefer 360p or 480p (itag 18 is usually 360p/MP4)
+        // We use 'lowest' as a fallback to ensure it's distinct from HD
+        let sdFormat = ytdl.chooseFormat(info.formats, { quality: '18' });
+        if (!sdFormat) {
+            sdFormat = ytdl.chooseFormat(info.formats, { quality: 'lowestvideo' });
+        }
+
+        // HD Quality: Highest available video
+        const hdFormat = ytdl.chooseFormat(info.formats, { quality: 'highestvideo' });
+
+        // Audio
         const audioFormat = ytdl.chooseFormat(info.formats, { quality: 'highestaudio', filter: 'audioonly' });
 
         const thumbnail = info.videoDetails.thumbnails.length > 0
@@ -109,8 +126,8 @@ async function downloadYouTube(url: string): Promise<{ success: boolean; data?: 
             success: true,
             data: {
                 platform: 'youtube',
-                url: videoFormat.url,
-                hdUrl: videoFormat.url, // Defaulting to same for now, can be improved later
+                url: sdFormat ? sdFormat.url : hdFormat.url, // Fallback to HD if SD not found
+                hdUrl: hdFormat.url,
                 audioUrl: audioFormat ? audioFormat.url : undefined,
                 thumbnail: thumbnail,
                 title: info.videoDetails.title,
@@ -120,6 +137,12 @@ async function downloadYouTube(url: string): Promise<{ success: boolean; data?: 
     } catch (e: any) {
         console.error("YouTube Fetch Error Stack:", e.stack);
         console.error("YouTube Fetch Error Message:", e.message);
+
+        // Retry logic or friendly error
+        if (e.message.includes("Sign in")) {
+            return { success: false, error: "YouTube is currently rate-limiting this server. Please try again later or use a different video." };
+        }
+
         return { success: false, error: `Failed to fetch from YouTube: ${e.message}` };
     }
 }
