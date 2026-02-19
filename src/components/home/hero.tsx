@@ -18,7 +18,7 @@ export function Hero() {
             <Waves />
 
             {/* Overlay to ensure text readability if needed */}
-            <div className="absolute inset-0 bg-black/40 pointer-events-none -z-5" />
+            <div className="absolute inset-0 bg-black/40 pointer-events-none -z-10" />
 
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -41,10 +41,11 @@ export function Hero() {
                         delay={50}
                     />
                     <br className="hidden md:block" />
+                    <br className="hidden md:block" />
                     <span className="inline-block relative">
                         <BlurText
                             text={t('titleEnd')}
-                            className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent inline-block"
+                            className="text-primary inline-block drop-shadow-2xl"
                             delay={50}
                         />
                     </span>

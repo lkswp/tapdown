@@ -90,8 +90,8 @@ const ParticleWave = () => {
 
 const Waves = () => {
     return (
-        <div className="absolute inset-0 -z-10 w-full h-full bg-black">
-            <Canvas camera={{ position: [0, 5, 10], fov: 60 }}>
+        <div className="fixed inset-0 -z-50 w-full h-full bg-black pointer-events-none">
+            <Canvas camera={{ position: [0, 5, 10], fov: 60 }} style={{ pointerEvents: 'auto' }}>
                 <ParticleWave />
             </Canvas>
         </div>
