@@ -14,12 +14,12 @@ export function Header() {
         <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-background/60 backdrop-blur-xl">
             <div className="container mx-auto flex h-16 items-center justify-between px-4">
                 <Link href="/" className="flex items-center gap-2 group">
-                    <div className="relative h-12 w-12 overflow-hidden rounded-xl bg-white/5 p-1 ring-1 ring-white/10 group-hover:scale-105 transition-transform shadow-[0_0_15px_-3px_var(--primary)]">
+                    <div className="relative h-12 w-32 group-hover:scale-105 transition-transform">
                         <Image
                             src="/logo.png"
                             alt="TapDown Logo"
                             fill
-                            className="object-cover"
+                            className="object-contain object-left"
                             priority
                         />
                     </div>

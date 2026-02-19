@@ -145,4 +145,15 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  /* Hide default cursor on desktop to show custom one */
+  @media (pointer: fine) {
+
+    body,
+    a,
+    button,
+    input {
+      cursor: none;
+    }
+  }
 }

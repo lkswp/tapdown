@@ -36,13 +36,24 @@ export function Hero() {
                     </span>
                 </h1>
 
-                <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                    {t('description')}
-                </p>
-                <span className="text-sm">TikTok</span>
-                <span className="text-sm">Instagram</span>
-                <span className="text-sm">YouTube</span>
-                <span className="text-sm">Facebook</span>
+                <div className="w-full relative group">
+                    {/* Glow effect */}
+                    <div className="absolute -inset-1 bg-gradient-to-r from-primary to-accent rounded-3xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+                    <div className="relative">
+                        <Downloader />
+                    </div>
+                </div>
+
+                {/* Supported Platforms */}
+                <div className="pt-8">
+                    <p className="text-sm text-muted-foreground mb-4 font-medium uppercase tracking-wider">{t('supportedPlatforms')}</p>
+                    <div className="flex items-center justify-center gap-6 opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-500">
+                        {/* Icons would go here */}
+                        <span className="text-xs font-semibold">TikTok</span>
+                        <span className="text-xs font-semibold">Instagram</span>
+                        <span className="text-xs font-semibold">YouTube</span>
+                    </div>
+                </div>
             </motion.div>
         </section>
     )
