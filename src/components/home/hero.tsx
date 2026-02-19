@@ -9,11 +9,7 @@ export function Hero() {
 
     return (
         <section className="relative flex flex-col items-center justify-center min-h-[80vh] px-4 overflow-hidden">
-            {/* Background Effects */}
-            <div className="absolute inset-0 -z-10">
-                <div className="absolute top-1/4 left-1/4 h-96 w-96 bg-primary/30 rounded-full blur-[128px] animate-pulse" />
-                <div className="absolute bottom-1/4 right-1/4 h-96 w-96 bg-accent/30 rounded-full blur-[128px] animate-pulse delay-1000" />
-            </div>
+            {/* Background moved to layout.tsx */}
 
             <motion.div
                 initial={{ opacity: 0, y: 20 }}

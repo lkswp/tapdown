@@ -57,6 +57,13 @@ export default async function RootLayout({
             disableTransitionOnChange
           >
             <div className="fixed inset-0 -z-10 h-full w-full bg-background [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)] opacity-20" />
+
+            {/* Global Fixed Background Effects */}
+            <div className="fixed inset-0 -z-5 pointer-events-none overflow-hidden">
+              <div className="absolute top-1/4 left-1/4 h-96 w-96 bg-primary/20 rounded-full blur-[128px] animate-pulse opacity-50" />
+              <div className="absolute bottom-1/4 right-1/4 h-96 w-96 bg-accent/20 rounded-full blur-[128px] animate-pulse delay-1000 opacity-50" />
+            </div>
+
             <CustomCursor />
             <Header />
             <main className="flex-1 container mx-auto px-4 pt-24 pb-12">
