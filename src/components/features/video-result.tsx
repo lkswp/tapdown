@@ -87,7 +87,7 @@ export const VideoResult: React.FC<VideoResultProps> = ({ data }) => {
                             <div className="grid grid-cols-2 gap-3 mt-6">
                                 <Button
                                     onClick={() => handleDownload('video')}
-                                    className="w-full gap-2 bg-primary hover:bg-primary/90"
+                                    className="w-full gap-2 bg-primary hover:bg-primary/80 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-primary/25"
                                 >
                                     <Video className="h-4 w-4" />
                                     {t('downloadVideo')}
@@ -95,8 +95,8 @@ export const VideoResult: React.FC<VideoResultProps> = ({ data }) => {
                                 <Button
                                     variant="outline"
                                     onClick={() => handleDownload('audio')}
-                                    disabled={!data.audioUrl && data.platform === 'instagram'} // Disable if no audio support known
-                                    className="w-full gap-2 border-white/10 bg-white/5 hover:bg-white/10"
+                                    disabled={!data.audioUrl && data.platform === 'instagram'}
+                                    className="w-full gap-2 border-white/10 bg-white/5 hover:bg-white/20 hover:scale-105 transition-all duration-300 hover:border-white/30"
                                 >
                                     <Music className="h-4 w-4" />
                                     {t('downloadAudio')}

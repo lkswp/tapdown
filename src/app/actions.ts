@@ -92,12 +92,8 @@ async function downloadYouTube(url: string): Promise<{ success: boolean; data?: 
             return { success: false, error: "Invalid YouTube URL" };
         }
 
-        // Try to use an agent to avoid 403s
-        const agent = ytdl.createAgent([
-            { name: "cookie", value: "VISITOR_INFO1_LIVE=; YSC=;" }
-        ]);
-
-        const info = await ytdl.getInfo(url, { agent });
+        // Try without explicit agent first to avoid bot detection
+        const info = await ytdl.getInfo(url);
         const videoFormat = ytdl.chooseFormat(info.formats, { quality: 'highest' });
 
         // Find audio only format
