@@ -2,7 +2,22 @@
     "Header": {
         "home": "Inicio",
         "howItWorks": "Cómo funciona",
-        "faq": "FAQ"
+        "contact": "Contacto"
+    },
+    "HowItWorksPage": {
+        "title": "Cómo Descargar",
+        "step1Title": "Copia el Enlace",
+        "step1Desc": "Encuentra el video que deseas descargar y copia el enlace.",
+        "step2Title": "Pega el Enlace",
+        "step2Desc": "Pega el enlace en el campo de entrada de arriba.",
+        "step3Title": "Descargar",
+        "step3Desc": "Haz clic en el botón de descarga y guarda tu video."
+    },
+    "ContactPage": {
+        "title": "Contáctanos",
+        "desc": "¿Tienes preguntas o sugerencias? Nos encantaría escucharte.",
+        "emailLabel": "Nuestro Correo",
+        "copied": "¡Copiado!"
     },
     "Hero": {
         "badge": "#1 Descargador de Videos",

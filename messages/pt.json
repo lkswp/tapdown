@@ -2,7 +2,22 @@
     "Header": {
         "home": "Início",
         "howItWorks": "Como funciona",
-        "faq": "FAQ"
+        "contact": "Contato"
+    },
+    "HowItWorksPage": {
+        "title": "Como Baixar",
+        "step1Title": "Copie o Link",
+        "step1Desc": "Encontre o vídeo que deseja baixar e copie o link.",
+        "step2Title": "Cole o Link",
+        "step2Desc": "Cole o link no campo de entrada acima.",
+        "step3Title": "Baixar",
+        "step3Desc": "Clique no botão de download e salve seu vídeo."
+    },
+    "ContactPage": {
+        "title": "Entre em Contato",
+        "desc": "Tem dúvidas ou sugestões? Adoraríamos ouvir você.",
+        "emailLabel": "Nosso E-mail",
+        "copied": "Copiado!"
     },
     "Hero": {
         "badge": "#1 Baixador de Vídeos Sociais",

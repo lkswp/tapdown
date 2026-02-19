@@ -2,7 +2,22 @@
     "Header": {
         "home": "Home",
         "howItWorks": "How it works",
-        "faq": "FAQ"
+        "contact": "Contact"
+    },
+    "HowItWorksPage": {
+        "title": "How to Download",
+        "step1Title": "Copy the Link",
+        "step1Desc": "Find the video you want to download and copy its link.",
+        "step2Title": "Paste the Link",
+        "step2Desc": "Paste the link into the input field above.",
+        "step3Title": "Download",
+        "step3Desc": "Click the download button and save your video."
+    },
+    "ContactPage": {
+        "title": "Get in Touch",
+        "desc": "Have questions or suggestions? We'd love to hear from you.",
+        "emailLabel": "Our Email",
+        "copied": "Copied!"
     },
     "Hero": {
         "badge": "#1 Social Media Downloader",

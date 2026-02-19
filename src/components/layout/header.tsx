@@ -30,7 +30,7 @@ export function Header() {
                 <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-muted-foreground absolute left-1/2 -translate-x-1/2">
                     <Link href="/" className="hover:text-foreground transition-colors hover:bg-white/5 px-4 py-2 rounded-full">{t('home')}</Link>
                     <Link href="/how-it-works" className="hover:text-foreground transition-colors hover:bg-white/5 px-4 py-2 rounded-full">{t('howItWorks')}</Link>
-                    <Link href="/faq" className="hover:text-foreground transition-colors hover:bg-white/5 px-4 py-2 rounded-full">{t('faq')}</Link>
+                    <Link href="/contact" className="hover:text-foreground transition-colors hover:bg-white/5 px-4 py-2 rounded-full">{t('contact')}</Link>
                 </nav>
 
                 <div className="flex items-center gap-2">
