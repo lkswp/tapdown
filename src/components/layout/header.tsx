@@ -7,6 +7,9 @@ import { LanguageSwitcher } from "@/components/features/language-switcher"
 import { useTranslations } from "next-intl"
 import Image from "next/image"
 
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs"
+import { LogIn, Sparkles } from "lucide-react"
+
 export function Header() {
     const t = useTranslations('Header')
 
@@ -23,23 +26,40 @@ export function Header() {
                             priority
                         />
                     </div>
-                    {/* Text removed as requested */}
                 </Link>
 
                 {/* Centered Navigation for better alignment */}
                 <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-muted-foreground absolute left-1/2 -translate-x-1/2">
                     <Link href="/" className="hover:text-foreground transition-colors hover:bg-white/5 px-4 py-2 rounded-full">{t('home')}</Link>
+                    <Link href="/pricing" className="hover:text-foreground transition-colors hover:bg-white/5 px-4 py-2 rounded-full flex items-center gap-2">
+                        <Sparkles className="w-3 h-3 text-primary animate-pulse" />
+                        Pricing
+                    </Link>
                     <Link href="/how-it-works" className="hover:text-foreground transition-colors hover:bg-white/5 px-4 py-2 rounded-full">{t('howItWorks')}</Link>
                     <Link href="/contact" className="hover:text-foreground transition-colors hover:bg-white/5 px-4 py-2 rounded-full">{t('contact')}</Link>
                 </nav>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-4">
                     <LanguageSwitcher />
-                    <Button variant="ghost" size="icon" asChild>
-                        <a href="https://github.com/lkswp/tapdown" target="_blank" rel="noopener noreferrer">
-                            <Github className="h-5 w-5" />
-                        </a>
-                    </Button>
+
+                    <SignedOut>
+                        <SignInButton mode="modal">
+                            <Button variant="ghost" size="sm" className="gap-2">
+                                <LogIn className="h-4 w-4" />
+                                Login
+                            </Button>
+                        </SignInButton>
+                    </SignedOut>
+
+                    <SignedIn>
+                        <UserButton
+                            appearance={{
+                                elements: {
+                                    avatarBox: "h-9 w-9 ring-2 ring-primary/20 hover:ring-primary/50 transition-all"
+                                }
+                            }}
+                        />
+                    </SignedIn>
                 </div>
             </div>
         </header>

@@ -6,6 +6,7 @@ import ytdl from "@distube/ytdl-core"
 
 export interface VideoData {
     url: string;
+    hdUrl?: string; // New field for HD download
     audioUrl?: string; // New field for audio download
     thumbnail?: string;
     title?: string;
@@ -45,6 +46,7 @@ async function downloadTikTok(url: string): Promise<{ success: boolean; data?: V
                 data: {
                     platform: 'tiktok',
                     url: json.data.play,
+                    hdUrl: json.data.hdplay,
                     audioUrl: json.data.music, // TikTok provides audio URL
                     thumbnail: json.data.cover,
                     title: json.data.title,
@@ -108,6 +110,7 @@ async function downloadYouTube(url: string): Promise<{ success: boolean; data?: 
             data: {
                 platform: 'youtube',
                 url: videoFormat.url,
+                hdUrl: videoFormat.url, // Defaulting to same for now, can be improved later
                 audioUrl: audioFormat ? audioFormat.url : undefined,
                 thumbnail: thumbnail,
                 title: info.videoDetails.title,
