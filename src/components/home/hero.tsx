@@ -34,21 +34,21 @@ export function Hero() {
                     <span className="text-sm font-medium text-white/80">{t('badge')}</span>
                 </div>
 
-                <div className="flex flex-col items-center justify-center gap-2">
+                <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white via-white/90 to-white/50 drop-shadow-2xl">
                     <BlurText
                         text={t('titleStart')}
-                        className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-white drop-shadow-2xl justify-center"
+                        className="inline-block text-white"
                         delay={50}
                     />
-
-                    <div className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter">
+                    <br className="hidden md:block" />
+                    <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                         <BlurText
                             text={t('titleEnd')}
-                            className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent justify-center"
+                            className="inline-block"
                             delay={50}
                         />
-                    </div>
-                </div>
+                    </span>
+                </h1>
 
                 <div className="w-full relative group max-w-2xl mx-auto mt-8">
                     {/* Impeccable Glow effect */}
