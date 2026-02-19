@@ -2,12 +2,10 @@
     "Header": {
         "home": "Home",
         "howItWorks": "How it works",
-        "contact": "Contact",
         "pricing": "Pricing",
         "login": "Login"
     },
-    // ...
-    "PricingPage": {
+    "HowItWorksPage": {
         "title": "Unlock TapDown",
         "subtitle": "Downloads without limits. Get the best quality, instantly.",
         "freeTitle": "Free",
