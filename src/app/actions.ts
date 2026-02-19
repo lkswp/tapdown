@@ -1,7 +1,8 @@
 "use server"
 
 // @ts-ignore
-import { TikTok, Instagram, YouTube, Twitter, Facebook } from "social-downloader-cherry";
+const instagramGetUrl = require("instagram-url-direct")
+import ytdl from "@distube/ytdl-core"
 
 export interface VideoData {
     url: string;
@@ -14,57 +15,99 @@ export interface VideoData {
 export async function getSocialVideo(url: string): Promise<{ success: boolean; data?: VideoData; error?: string }> {
     try {
         const cleanUrl = url.trim();
-        let result;
-        let platform: VideoData['platform'] = 'other';
 
         if (cleanUrl.includes("tiktok.com")) {
-            platform = 'tiktok';
-            // TikTok.getVideo returns a promise with data
-            const res = await TikTok.getVideo(cleanUrl);
-            result = res?.data;
+            return await downloadTikTok(cleanUrl);
         } else if (cleanUrl.includes("instagram.com")) {
-            platform = 'instagram';
-            // Instagram.getAny returns a promise with data
-            const res = await Instagram.getAny(cleanUrl);
-            result = res?.data;
+            return await downloadInstagram(cleanUrl);
         } else if (cleanUrl.includes("youtube.com") || cleanUrl.includes("youtu.be")) {
-            platform = 'youtube';
-            const res = await YouTube.getVideo(cleanUrl);
-            result = res?.data;
-        } else if (cleanUrl.includes("twitter.com") || cleanUrl.includes("x.com")) {
-            platform = 'twitter';
-            const res = await Twitter.getVideo(cleanUrl);
-            result = res?.data;
-        } else if (cleanUrl.includes("facebook.com")) {
-            platform = 'facebook';
-            const res = await Facebook.getVideo(cleanUrl);
-            result = res?.data;
+            return await downloadYouTube(cleanUrl);
         } else {
             return { success: false, error: "Unsupported platform" };
         }
 
-        if (!result) {
-            return { success: false, error: "Failed to fetch video data" };
+    } catch (error) {
+        console.error("Download error:", error);
+        return { success: false, error: "Failed to process URL. Please try again." };
+    }
+}
+
+async function downloadTikTok(url: string): Promise<{ success: boolean; data?: VideoData; error?: string }> {
+    try {
+        const apiUrl = `https://www.tikwm.com/api/?url=${encodeURIComponent(url)}&hd=1`;
+        const response = await fetch(apiUrl);
+        const json = await response.json();
+
+        if (json.code === 0) {
+            return {
+                success: true,
+                data: {
+                    platform: 'tiktok',
+                    url: json.data.play,
+                    thumbnail: json.data.cover,
+                    title: json.data.title,
+                    author: json.data.author?.nickname || json.data.author?.unique_id
+                }
+            };
+        } else {
+            return { success: false, error: json.msg || "TikTok API error" };
+        }
+    } catch (e) {
+        console.error("TikTok Fetch Error:", e);
+        return { success: false, error: "Failed to fetch from TikTok" };
+    }
+}
+
+async function downloadInstagram(url: string): Promise<{ success: boolean; data?: VideoData; error?: string }> {
+    try {
+        const result = await instagramGetUrl(url);
+
+        if (result && result.url_list && result.url_list.length > 0) {
+            const videoUrl = result.url_list[0];
+            return {
+                success: true,
+                data: {
+                    platform: 'instagram',
+                    url: videoUrl,
+                    thumbnail: "",
+                    title: "Instagram Reel",
+                    author: "Instagram User"
+                }
+            };
+        } else {
+            return { success: false, error: "No video found in Instagram link" };
+        }
+    } catch (e) {
+        console.error("Instagram Fetch Error:", e);
+        return { success: false, error: "Failed to fetch from Instagram." };
+    }
+}
+
+async function downloadYouTube(url: string): Promise<{ success: boolean; data?: VideoData; error?: string }> {
+    try {
+        if (!ytdl.validateURL(url)) {
+            return { success: false, error: "Invalid YouTube URL" };
         }
 
-        // Normalize data structure based on what the library returns
-        // Note: The library returns different structures for different platforms.
-        // We need to inspect the result to map it correctly.
-        // For now, returning the raw result mapped to our structure as best as possible.
+        const info = await ytdl.getInfo(url);
+        const format = ytdl.chooseFormat(info.formats, { quality: 'highest' });
+
+        const thumbnail = info.videoDetails.thumbnails.length > 0
+            ? info.videoDetails.thumbnails[info.videoDetails.thumbnails.length - 1].url
+            : "";
 
         return {
             success: true,
             data: {
-                url: result.url || result.link || result.video || result.videoUrl || "", // Adjust based on actual API response
-                thumbnail: result.thumbnail || result.cover || result.picture || "",
-                title: result.title || result.text || result.caption || "",
-                author: result.author || result.owner || "",
-                platform
+                platform: 'youtube',
+                url: format.url,
+                thumbnail: thumbnail,
+                title: info.videoDetails.title,
+                author: info.videoDetails.author.name
             }
         };
-
-    } catch (error) {
-        console.error("Download error:", error);
-        return { success: false, error: "Failed to process URL. Please try again." };
+    } catch (e) {
+        console.error("YouTube Fetch Error:", e);
+        return { success: false, error: "Failed to fetch from YouTube" };
     }
 }
