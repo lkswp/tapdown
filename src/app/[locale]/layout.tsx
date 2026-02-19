@@ -15,6 +15,10 @@ const outfit = Outfit({
 export const metadata: Metadata = {
   title: "TapDown - Social Media Video Downloader",
   description: "Download videos from TikTok, Instagram, and more in high quality. Fast, free, and easy.",
+  icons: {
+    icon: "/logo.png",
+    apple: "/logo.png",
+  }
 };
 
 import { Header } from "@/components/layout/header";
