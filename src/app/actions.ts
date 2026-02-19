@@ -6,6 +6,7 @@ import ytdl from "@distube/ytdl-core"
 
 export interface VideoData {
     url: string;
+    audioUrl?: string; // New field for audio download
     thumbnail?: string;
     title?: string;
     author?: string;
@@ -44,6 +45,7 @@ async function downloadTikTok(url: string): Promise<{ success: boolean; data?: V
                 data: {
                     platform: 'tiktok',
                     url: json.data.play,
+                    audioUrl: json.data.music, // TikTok provides audio URL
                     thumbnail: json.data.cover,
                     title: json.data.title,
                     author: json.data.author?.nickname || json.data.author?.unique_id
@@ -69,6 +71,7 @@ async function downloadInstagram(url: string): Promise<{ success: boolean; data?
                 data: {
                     platform: 'instagram',
                     url: videoUrl,
+                    // Instagram doesn't provide separate audio URL easily
                     thumbnail: "",
                     title: "Instagram Reel",
                     author: "Instagram User"
@@ -95,7 +98,10 @@ async function downloadYouTube(url: string): Promise<{ success: boolean; data?: 
         ]);
 
         const info = await ytdl.getInfo(url, { agent });
-        const format = ytdl.chooseFormat(info.formats, { quality: 'highest' });
+        const videoFormat = ytdl.chooseFormat(info.formats, { quality: 'highest' });
+
+        // Find audio only format
+        const audioFormat = ytdl.chooseFormat(info.formats, { quality: 'highestaudio', filter: 'audioonly' });
 
         const thumbnail = info.videoDetails.thumbnails.length > 0
             ? info.videoDetails.thumbnails[info.videoDetails.thumbnails.length - 1].url
@@ -105,7 +111,8 @@ async function downloadYouTube(url: string): Promise<{ success: boolean; data?: 
             success: true,
             data: {
                 platform: 'youtube',
-                url: format.url,
+                url: videoFormat.url,
+                audioUrl: audioFormat ? audioFormat.url : undefined,
                 thumbnail: thumbnail,
                 title: info.videoDetails.title,
                 author: info.videoDetails.author.name

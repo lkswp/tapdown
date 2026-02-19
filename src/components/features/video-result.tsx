@@ -10,6 +10,7 @@ import { useTranslations } from "next-intl"
 interface VideoResultProps {
     data: {
         url: string
+        audioUrl?: string
         thumbnail?: string
         title?: string
         author?: string
@@ -17,15 +18,23 @@ interface VideoResultProps {
     }
 }
 
-export function VideoResult({ data }: VideoResultProps) {
-    const t = useTranslations('Result')
+export const VideoResult: React.FC<VideoResultProps> = ({ data }) => {
+    const t = useTranslations('VideoResult');
 
     const handleDownload = async (usage: 'video' | 'audio') => {
+        // Determine the correct URL to use
+        const targetUrl = usage === 'audio' ? (data.audioUrl || data.url) : data.url;
+
+        // If user explicitly wants audio but we don't have an audioUrl, 
+        // we might be forced to download the video. 
+        // For now, let's just proceed but we should warn or disable if appropriate.
+        // Ideally we only show the Audio button if audioUrl exists or if we can handle it.
+
         const ext = usage === 'audio' ? 'mp3' : 'mp4';
         const filename = `tapdown-${data.platform}-${Date.now()}.${ext}`;
 
         // Use the proxy endpoint to force download
-        const downloadUrl = `/api/download?url=${encodeURIComponent(data.url)}&filename=${filename}`;
+        const downloadUrl = `/api/download?url=${encodeURIComponent(targetUrl)}&filename=${filename}`;
 
         // Create a temporary link to trigger download
         const link = document.createElement('a');
@@ -86,6 +95,7 @@ export function VideoResult({ data }: VideoResultProps) {
                                 <Button
                                     variant="outline"
                                     onClick={() => handleDownload('audio')}
+                                    disabled={!data.audioUrl && data.platform === 'instagram'} // Disable if no audio support known
                                     className="w-full gap-2 border-white/10 bg-white/5 hover:bg-white/10"
                                 >
                                     <Music className="h-4 w-4" />
