@@ -5,7 +5,11 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Check, X } from "lucide-react"
 import { motion } from "framer-motion"
 
+import { useTranslations } from "next-intl"
+
 export default function PricingPage() {
+    const t = useTranslations('PricingPage');
+
     const handleUpgrade = async () => {
         try {
             const response = await fetch("/api/checkout", {
@@ -30,10 +34,12 @@ export default function PricingPage() {
                 className="text-center mb-12 space-y-4"
             >
                 <h1 className="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60">
-                    Unlock <span className="text-primary">TapDown Pro</span>
+                    {t.rich('title', {
+                        span: (chunks) => <span className="text-primary">{chunks}</span>
+                    })}
                 </h1>
                 <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                    Downloads without limits. Get the best quality, instantly.
+                    {t('subtitle')}
                 </p>
             </motion.div>
 
@@ -41,32 +47,36 @@ export default function PricingPage() {
                 {/* Free Plan */}
                 <Card className="bg-background/40 backdrop-blur-xl border-white/10 relative overflow-hidden">
                     <CardHeader>
-                        <CardTitle className="text-2xl">Free</CardTitle>
-                        <CardDescription>Basic downloading for casual users</CardDescription>
-                        <div className="mt-4 text-3xl font-bold">$0 <span className="text-sm font-normal text-muted-foreground">/ month</span></div>
+                        <CardTitle className="text-2xl">{t('freeTitle')}</CardTitle>
+                        <CardDescription>{t('freeDesc')}</CardDescription>
+                        <div className="mt-4 text-3xl font-bold">
+                            {t.rich('freePrice', {
+                                span: (chunks) => <span className="text-sm font-normal text-muted-foreground">{chunks}</span>
+                            })}
+                        </div>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <ul className="space-y-3">
                             <li className="flex items-center gap-2 text-muted-foreground">
                                 <Check className="w-5 h-5 text-green-500" />
-                                <span>Unlimited Downloads</span>
+                                <span>{t('featureUnlimited')}</span>
                             </li>
                             <li className="flex items-center gap-2 text-muted-foreground">
                                 <Check className="w-5 h-5 text-green-500" />
-                                <span>Standard Quality (SD)</span>
+                                <span>{t('featureSD')}</span>
                             </li>
                             <li className="flex items-center gap-2 text-muted-foreground">
                                 <X className="w-5 h-5 text-red-500" />
-                                <span>Wait 20 seconds per download</span>
+                                <span>{t('featureWait')}</span>
                             </li>
                             <li className="flex items-center gap-2 text-muted-foreground">
                                 <X className="w-5 h-5 text-red-500" />
-                                <span>No HD Available</span>
+                                <span>{t('featureNoHD')}</span>
                             </li>
                         </ul>
                     </CardContent>
                     <CardFooter>
-                        <Button variant="outline" className="w-full" disabled>Current Plan</Button>
+                        <Button variant="outline" className="w-full" disabled>{t('currentPlan')}</Button>
                     </CardFooter>
                 </Card>
 
@@ -75,29 +85,33 @@ export default function PricingPage() {
                     <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-transparent opacity-50 group-hover:opacity-100 transition-opacity" />
                     <CardHeader className="relative">
                         <div className="absolute top-0 right-0 px-3 py-1 bg-primary text-primary-foreground text-xs font-bold rounded-bl-xl">
-                            POPULAR
+                            {t('popular')}
                         </div>
-                        <CardTitle className="text-2xl text-primary">Pro</CardTitle>
-                        <CardDescription>For creators and power users</CardDescription>
-                        <div className="mt-4 text-3xl font-bold">$9.99 <span className="text-sm font-normal text-muted-foreground">/ month</span></div>
+                        <CardTitle className="text-2xl text-primary">{t('proTitle')}</CardTitle>
+                        <CardDescription>{t('proDesc')}</CardDescription>
+                        <div className="mt-4 text-3xl font-bold">
+                            {t.rich('proPrice', {
+                                span: (chunks) => <span className="text-sm font-normal text-muted-foreground">{chunks}</span>
+                            })}
+                        </div>
                     </CardHeader>
                     <CardContent className="space-y-4 relative">
                         <ul className="space-y-3">
                             <li className="flex items-center gap-2">
                                 <Check className="w-5 h-5 text-primary" />
-                                <span className="font-medium">Instant Downloads (No Timer)</span>
+                                <span className="font-medium">{t('featureInstant')}</span>
                             </li>
                             <li className="flex items-center gap-2">
                                 <Check className="w-5 h-5 text-primary" />
-                                <span className="font-medium">Original HD Quality</span>
+                                <span className="font-medium">{t('featureHD')}</span>
                             </li>
                             <li className="flex items-center gap-2">
                                 <Check className="w-5 h-5 text-primary" />
-                                <span>Priority Support</span>
+                                <span>{t('featurePriority')}</span>
                             </li>
                             <li className="flex items-center gap-2">
                                 <Check className="w-5 h-5 text-primary" />
-                                <span>Ad-free Experience</span>
+                                <span>{t('featureAdFree')}</span>
                             </li>
                         </ul>
                     </CardContent>
@@ -106,7 +120,7 @@ export default function PricingPage() {
                             onClick={handleUpgrade}
                             className="w-full bg-primary hover:bg-primary/80 font-bold shadow-lg shadow-primary/25 hover:scale-105 transition-all"
                         >
-                            Upgrade Now
+                            {t('upgradeNow')}
                         </Button>
                     </CardFooter>
                 </Card>

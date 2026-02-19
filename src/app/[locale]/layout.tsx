@@ -27,6 +27,13 @@ import { Toaster } from "sonner";
 import { CustomCursor } from "@/components/ui/custom-cursor";
 
 import { ClerkProvider } from "@clerk/nextjs";
+import { ptBR, esES, enUS } from "@clerk/localizations";
+
+const clerkLocalizations = {
+  en: enUS,
+  pt: ptBR,
+  es: esES,
+};
 
 export default async function RootLayout({
   children,
@@ -47,7 +54,7 @@ export default async function RootLayout({
   const messages = await getMessages();
 
   return (
-    <ClerkProvider>
+    <ClerkProvider localization={clerkLocalizations[locale as keyof typeof clerkLocalizations]}>
       <html lang={locale} suppressHydrationWarning>
         <body
           className={`${outfit.variable} antialiased bg-background text-foreground selection:bg-primary/20 selection:text-primary relative overflow-x-hidden min-h-screen flex flex-col`}

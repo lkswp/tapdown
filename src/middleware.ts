@@ -9,6 +9,11 @@ const isProtectedRoute = createRouteMatcher(['/api/webhooks/stripe']);
 export default clerkMiddleware(async (auth, req) => {
     if (isProtectedRoute(req)) await auth.protect();
 
+    // Skip intlMiddleware for API routes so they are not localized (e.g. /api/download)
+    if (req.nextUrl.pathname.startsWith('/api')) {
+        return;
+    }
+
     return intlMiddleware(req);
 });
 

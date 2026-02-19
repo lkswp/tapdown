@@ -118,7 +118,7 @@ export const VideoResult: React.FC<VideoResultProps> = ({ data }) => {
                             {!isPro && (
                                 <div className="absolute top-2 right-2 bg-black/60 backdrop-blur-md px-2 py-1 rounded-md text-xs font-bold text-white flex items-center gap-1 border border-white/10">
                                     <Timer className="w-3 h-3" />
-                                    <span>Free Mode</span>
+                                    <span>{t('freeMode')}</span>
                                 </div>
                             )}
                         </div>
@@ -131,7 +131,7 @@ export const VideoResult: React.FC<VideoResultProps> = ({ data }) => {
                                     </span>
                                     {isPro && (
                                         <span className="px-2 py-0.5 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs font-bold uppercase flex items-center gap-1">
-                                            <Sparkles className="w-3 h-3" /> PRO
+                                            <Sparkles className="w-3 h-3" /> {t('proBadge')}
                                         </span>
                                     )}
                                     {data.author && (
@@ -163,7 +163,7 @@ export const VideoResult: React.FC<VideoResultProps> = ({ data }) => {
                                         }`}
                                 >
                                     {isPro ? <Sparkles className="h-4 w-4" /> : <Lock className="h-4 w-4" />}
-                                    Download HD
+                                    {t('downloadHD')}
                                 </Button>
 
                                 {/* Audio Download */}
@@ -188,12 +188,12 @@ export const VideoResult: React.FC<VideoResultProps> = ({ data }) => {
                     <DialogHeader>
                         <DialogTitle className="text-center flex flex-col items-center gap-4">
                             <Timer className="w-12 h-12 text-primary animate-pulse" />
-                            <span>{downloadReady ? "Download Ready!" : "Preparing Download..."}</span>
+                            <span>{downloadReady ? t('downloadReady') : t('preparingDownload')}</span>
                         </DialogTitle>
                         <DialogDescription className="text-center">
                             {downloadReady
-                                ? "Your file is ready nicely baked."
-                                : "Free users wait 20 seconds. Upgrade to Pro for instant downloads."}
+                                ? t('readyMessage')
+                                : t('waitMessage')}
                         </DialogDescription>
                     </DialogHeader>
 
@@ -205,14 +205,14 @@ export const VideoResult: React.FC<VideoResultProps> = ({ data }) => {
                             </div>
                         ) : (
                             <Button onClick={handleTimerCompleteDownload} className="w-full bg-green-500 hover:bg-green-600 text-white text-lg font-bold py-6 animate-in zoom-in duration-300">
-                                Download Now
+                                {t('downloadNow')}
                             </Button>
                         )}
 
                         {!downloadReady && (
                             <div className="pt-4 border-t border-white/10">
                                 <Button variant="ghost" className="w-full text-muted-foreground hover:text-primary" onClick={() => router.push('/pricing')}>
-                                    Skip the wait with Pro &rarr;
+                                    {t('skipWait')} &rarr;
                                 </Button>
                             </div>
                         )}
