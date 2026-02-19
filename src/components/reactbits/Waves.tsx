@@ -49,8 +49,8 @@ const ParticleWave = () => {
         // Access the position attribute
         const positions = ref.current.geometry.attributes.position.array as Float32Array;
 
-        const mouseX = mouse.current.x * 5; // Amplified mouse influence
-        const mouseY = mouse.current.y * 5;
+        const mouseX = mouse.current.x * 0.5; // Reduced mouse influence
+        const mouseY = mouse.current.y * 0.5;
 
         for (let i = 0; i < count; i++) {
             const x = positions[i * 3];
@@ -58,7 +58,7 @@ const ParticleWave = () => {
 
             // Dynamic wave equation influenced by mouse
             const dist = Math.sqrt((x - mouseX) ** 2 + (z - mouseY) ** 2);
-            const mouseInfluence = Math.max(0, 5 - dist) * 0.2; // Localized ripple effect
+            const mouseInfluence = Math.max(0, 2 - dist) * 0.1; // Reduced ripple effect
 
             // y = A * sin(B * x + C * t) + ... mouse ripple
             positions[i * 3 + 1] =
@@ -70,7 +70,7 @@ const ParticleWave = () => {
         ref.current.geometry.attributes.position.needsUpdate = true;
 
         // Rotation follows mouse slightly
-        ref.current.rotation.y = THREE.MathUtils.lerp(ref.current.rotation.y, t * 0.05 + mouseX * 0.1, 0.05);
+        ref.current.rotation.y = THREE.MathUtils.lerp(ref.current.rotation.y, t * 0.05 + mouseX * 0.05, 0.05);
         ref.current.rotation.x = THREE.MathUtils.lerp(ref.current.rotation.x, mouseY * 0.05, 0.05);
     });
 

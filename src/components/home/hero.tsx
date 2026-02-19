@@ -41,10 +41,10 @@ export function Hero() {
                         delay={50}
                     />
                     <br className="hidden md:block" />
-                    <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                    <span className="inline-block relative">
                         <BlurText
                             text={t('titleEnd')}
-                            className="inline-block"
+                            className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent inline-block"
                             delay={50}
                         />
                     </span>
