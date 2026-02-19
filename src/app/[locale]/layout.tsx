@@ -24,6 +24,7 @@ export const metadata: Metadata = {
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Toaster } from "sonner";
+import { CustomCursor } from "@/components/ui/custom-cursor";
 
 export default async function RootLayout({
   children,
@@ -56,6 +57,7 @@ export default async function RootLayout({
             disableTransitionOnChange
           >
             <div className="fixed inset-0 -z-10 h-full w-full bg-background [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)] opacity-20" />
+            <CustomCursor />
             <Header />
             <main className="flex-1 container mx-auto px-4 pt-24 pb-12">
               {children}
