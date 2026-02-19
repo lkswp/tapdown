@@ -1,0 +1,30 @@
+{
+    "Header": {
+        "home": "Início",
+        "howItWorks": "Como funciona",
+        "faq": "FAQ"
+    },
+    "Hero": {
+        "badge": "#1 Baixador de Vídeos Sociais",
+        "titleStart": "Baixe Vídeos",
+        "titleEnd": "Sem Marca D'água",
+        "description": "Rápido, grátis e ilimitado. Baixe do TikTok, Instagram Reels, YouTube Shorts e muito mais em qualidade HD.",
+        "supportedPlatforms": "Plataformas Suportadas"
+    },
+    "Input": {
+        "placeholder": "Cole o link do vídeo aqui (TikTok, Instagram, etc.)",
+        "paste": "Colar",
+        "downloading": "Processando..."
+    },
+    "Result": {
+        "downloadVideo": "Baixar Vídeo",
+        "downloadAudio": "Baixar Áudio",
+        "by": "por {author}",
+        "noPreview": "Sem Prévia"
+    },
+    "Errors": {
+        "general": "Algo deu errado. Tente novamente.",
+        "fetchFailed": "Falha ao buscar vídeo. Verifique o link.",
+        "unsupported": "Plataforma não suportada."
+    }
+}

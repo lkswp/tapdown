@@ -5,9 +5,11 @@ import { DownloaderInput } from "./downloader-input"
 import { VideoResult } from "./video-result"
 import { getSocialVideo } from "@/app/actions"
 import type { VideoData } from "@/app/actions"
-import { toast } from "sonner" // We might need to install sonner, but let's use standard alerts or install it next
+import { toast } from "sonner"
+import { useTranslations } from "next-intl"
 
 export function Downloader() {
+    const t = useTranslations('Errors')
     const [loading, setLoading] = useState(false)
     const [result, setResult] = useState<VideoData | null>(null)
 
@@ -21,13 +23,12 @@ export function Downloader() {
             if (response.success && response.data) {
                 setResult(response.data)
             } else {
-                // Handle error (e.g., show toast)
                 console.error(response.error)
-                alert(response.error || "Something went wrong")
+                toast.error(response.error || t('general'))
             }
         } catch (error) {
             console.error(error)
-            alert("An unexpected error occurred")
+            toast.error(t('general'))
         } finally {
             setLoading(false)
         }

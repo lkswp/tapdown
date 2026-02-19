@@ -2,9 +2,10 @@
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Download, Music, Video } from "lucide-react"
+import { Music, Video } from "lucide-react"
 import Image from "next/image"
 import { motion } from "framer-motion"
+import { useTranslations } from "next-intl"
 
 interface VideoResultProps {
     data: {
@@ -17,22 +18,19 @@ interface VideoResultProps {
 }
 
 export function VideoResult({ data }: VideoResultProps) {
-    const handleDownload = async (usage: 'video' | 'audio') => {
-        // For audio, we would ideally need a separate URL or transcoding. 
-        // For MVP, we'll just download the video file but name it appropriately if the user asked for audio (though it will still be mp4 unless converted).
-        // TODO: proper audio extraction
+    const t = useTranslations('Result')
 
+    const handleDownload = async (usage: 'video' | 'audio') => {
         const ext = usage === 'audio' ? 'mp3' : 'mp4';
         const filename = `tapdown-${data.platform}-${Date.now()}.${ext}`;
 
         // Use the proxy endpoint to force download
-        // Encode URL to ensure special characters don't break the query param
         const downloadUrl = `/api/download?url=${encodeURIComponent(data.url)}&filename=${filename}`;
 
         // Create a temporary link to trigger download
         const link = document.createElement('a');
         link.href = downloadUrl;
-        link.setAttribute('download', filename); // This attribute is often ignored for cross-origin, hence the proxy
+        link.setAttribute('download', filename);
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -57,7 +55,7 @@ export function VideoResult({ data }: VideoResultProps) {
                                 />
                             ) : (
                                 <div className="flex items-center justify-center h-full text-muted-foreground">
-                                    No Preview
+                                    {t('noPreview')}
                                 </div>
                             )}
                         </div>
@@ -69,7 +67,7 @@ export function VideoResult({ data }: VideoResultProps) {
                                         {data.platform}
                                     </span>
                                     {data.author && (
-                                        <span className="text-sm text-muted-foreground">by {data.author}</span>
+                                        <span className="text-sm text-muted-foreground">{t('by', { author: data.author })}</span>
                                     )}
                                 </div>
                                 <h3 className="font-semibold text-lg line-clamp-2 md:line-clamp-3">
@@ -83,7 +81,7 @@ export function VideoResult({ data }: VideoResultProps) {
                                     className="w-full gap-2 bg-primary hover:bg-primary/90"
                                 >
                                     <Video className="h-4 w-4" />
-                                    Download Video
+                                    {t('downloadVideo')}
                                 </Button>
                                 <Button
                                     variant="outline"
@@ -91,7 +89,7 @@ export function VideoResult({ data }: VideoResultProps) {
                                     className="w-full gap-2 border-white/10 bg-white/5 hover:bg-white/10"
                                 >
                                     <Music className="h-4 w-4" />
-                                    Download Audio
+                                    {t('downloadAudio')}
                                 </Button>
                             </div>
                         </div>

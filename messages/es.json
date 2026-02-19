@@ -1,0 +1,30 @@
+{
+    "Header": {
+        "home": "Inicio",
+        "howItWorks": "Cómo funciona",
+        "faq": "FAQ"
+    },
+    "Hero": {
+        "badge": "#1 Descargador de Videos",
+        "titleStart": "Descarga Videos",
+        "titleEnd": "Sin Marca de Agua",
+        "description": "Rápido, gratis e ilimitado. Descarga de TikTok, Instagram Reels, YouTube Shorts y más en calidad HD.",
+        "supportedPlatforms": "Plataformas Compatibles"
+    },
+    "Input": {
+        "placeholder": "Pega el enlace del video aquí (TikTok, Instagram, etc.)",
+        "paste": "Pegar",
+        "downloading": "Procesando..."
+    },
+    "Result": {
+        "downloadVideo": "Descargar Video",
+        "downloadAudio": "Descargar Audio",
+        "by": "por {author}",
+        "noPreview": "Sin Vista Previa"
+    },
+    "Errors": {
+        "general": "Algo salió mal. Inténtalo de nuevo.",
+        "fetchFailed": "Error al obtener el video. Verifica el enlace.",
+        "unsupported": "Plataforma no compatible."
+    }
+}

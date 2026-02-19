@@ -1,0 +1,30 @@
+{
+    "Header": {
+        "home": "Home",
+        "howItWorks": "How it works",
+        "faq": "FAQ"
+    },
+    "Hero": {
+        "badge": "#1 Social Media Downloader",
+        "titleStart": "Download Videos",
+        "titleEnd": "Without Watermarks",
+        "description": "Fast, free, and unlimited. Download from TikTok, Instagram Reels, YouTube Shorts, and more in classic HD quality.",
+        "supportedPlatforms": "Supported Platforms"
+    },
+    "Input": {
+        "placeholder": "Paste video URL here (TikTok, Instagram, etc.)",
+        "paste": "Paste",
+        "downloading": "Processing..."
+    },
+    "Result": {
+        "downloadVideo": "Download Video",
+        "downloadAudio": "Download Audio",
+        "by": "by {author}",
+        "noPreview": "No Preview"
+    },
+    "Errors": {
+        "general": "Something went wrong. Please try again.",
+        "fetchFailed": "Failed to fetch video. Please check the URL.",
+        "unsupported": "Unsupported platform."
+    }
+}
