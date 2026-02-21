@@ -24,10 +24,17 @@ export async function getSocialVideo(url: string): Promise<{ success: boolean; d
             return await downloadTikTok(cleanUrl);
         } else if (cleanUrl.includes("instagram.com")) {
             return await downloadInstagram(cleanUrl);
-        } else if (cleanUrl.includes("youtube.com") || cleanUrl.includes("youtu.be")) {
-            return await downloadYouTube(cleanUrl);
+        } else if (
+            cleanUrl.includes("youtube.com") ||
+            cleanUrl.includes("youtu.be") ||
+            cleanUrl.includes("twitter.com") ||
+            cleanUrl.includes("x.com") ||
+            cleanUrl.includes("facebook.com") ||
+            cleanUrl.includes("fb.watch")
+        ) {
+            return await downloadYtDlp(cleanUrl);
         } else {
-            return { success: false, error: "Unsupported platform" };
+            return { success: false, error: "Unsupported platform or invalid URL." };
         }
 
     } catch (error) {
@@ -58,7 +65,7 @@ async function downloadTikTok(url: string): Promise<{ success: boolean; data?: V
         } else {
             return { success: false, error: json.msg || "TikTok API error" };
         }
-    } catch (e) {
+    } catch (e: any) {
         console.error("TikTok Fetch Error:", e);
         return { success: false, error: "Failed to fetch from TikTok" };
     }
@@ -90,17 +97,21 @@ async function downloadInstagram(url: string): Promise<{ success: boolean; data?
     }
 }
 
-async function downloadYouTube(url: string): Promise<{ success: boolean; data?: VideoData; error?: string }> {
+async function downloadYtDlp(url: string): Promise<{ success: boolean; data?: VideoData; error?: string }> {
     try {
-        console.log(`Downloading YouTube video with yt-dlp: ${url}`);
+        console.log(`Downloading video with yt-dlp: ${url}`);
+
+        // Ascertain platform for frontend icon/display
+        let currentPlatform: VideoData['platform'] = 'other';
+        if (url.includes('youtube.com') || url.includes('youtu.be')) currentPlatform = 'youtube';
+        if (url.includes('twitter.com') || url.includes('x.com')) currentPlatform = 'twitter';
+        if (url.includes('facebook.com') || url.includes('fb.watch')) currentPlatform = 'facebook';
 
         // Locate yt-dlp binary
         const binaryName = process.platform === 'win32' ? 'yt-dlp.exe' : 'yt-dlp';
         const binaryPath = path.join(process.cwd(), 'bin', binaryName);
 
         const ytDlpWrap = new YTDlpWrap(binaryPath);
-
-        // Use Node.js as the JS runtime
         const nodePath = process.execPath;
 
         const args = [
@@ -110,10 +121,6 @@ async function downloadYouTube(url: string): Promise<{ success: boolean; data?: 
             '--js-runtimes', `node:${nodePath}`
         ];
 
-        // Ensure we retrieve formats that have both video and audio if possible (pre-merged)
-        // or just rely on 'best' which might be pre-merged 720p/360p.
-        // We'll let yt-dlp decide default best, and we pick from available formats in JSON.
-
         const stdout = await ytDlpWrap.execPromise(args);
         const metadata = JSON.parse(stdout);
 
@@ -121,52 +128,68 @@ async function downloadYouTube(url: string): Promise<{ success: boolean; data?: 
             return { success: false, error: "Failed to fetch video metadata from yt-dlp." };
         }
 
-        // Find best format with video+audio
-        // mp4 preferred for compatibility
         let formats = metadata.formats || [];
 
-        // 1. Try to find a format with both vcodec and acodec (pre-merged)
-        let bestFormat = formats.find((f: any) => f.vcodec !== 'none' && f.acodec !== 'none' && f.ext === 'mp4' && (f.format_id === '22' || f.height >= 720)); // HD 720p
+        // Simple format selection logic that works universally:
+        // 1. Try to find a pre-merged mp4 with video and audio
+        let bestFormat = formats.find((f: any) => f.vcodec !== 'none' && f.acodec !== 'none' && f.ext === 'mp4' && (f.format_id === '22' || f.height >= 720));
 
         if (!bestFormat) {
-            // Fallback to SD with audio
             bestFormat = formats.find((f: any) => f.vcodec !== 'none' && f.acodec !== 'none' && f.ext === 'mp4');
         }
 
-        // If still nothing, take ANY format with both
+        // 2. If no pre-merged mp4, try ANY pre-merged
         if (!bestFormat) {
             bestFormat = formats.find((f: any) => f.vcodec !== 'none' && f.acodec !== 'none');
         }
 
-        // 2. Find audio only format
+        // 3. Twitter/Facebook sometimes just return a single url as 'url' in metadata, or formats with just 'video'
+        if (!bestFormat && metadata.url) {
+            bestFormat = { url: metadata.url }; // Fallback for simple structures
+        }
+
+        // 4. If all else fails, just find the first thing that has a video codec
+        if (!bestFormat) {
+            bestFormat = formats.find((f: any) => f.vcodec !== 'none');
+        }
+
         const audioFormat = formats.find((f: any) => f.acodec !== 'none' && f.vcodec === 'none' && (f.ext === 'm4a' || f.ext === 'mp3'));
 
-        if (!bestFormat) {
-            return { success: false, error: "No suitable video format found." };
+        if (!bestFormat || !bestFormat.url) {
+            return { success: false, error: "No suitable video format could be found for this link." };
         }
 
         return {
             success: true,
             data: {
-                platform: 'youtube',
+                platform: currentPlatform,
                 url: bestFormat.url,
-                hdUrl: bestFormat.url, // yt-dlp usually gives best available as single file
+                hdUrl: bestFormat.url,
                 audioUrl: audioFormat?.url,
                 thumbnail: metadata.thumbnail,
-                title: metadata.title,
-                author: metadata.uploader
+                title: metadata.title || `${currentPlatform} Video`,
+                author: metadata.uploader || metadata.channel || "Unknown Author"
             }
         };
 
     } catch (e: any) {
-        console.error("YouTube Fetch Error (yt-dlp):", e);
-        // Clean up error message
-        const msg = e.stderr || e.message || "Unknown error";
-        return { success: false, error: `Failed to process YouTube video.` };
+        console.error("yt-dlp Fetch Error:", e);
+        const errorString = e.stderr || e.message;
+
+        let userFacingError = `Failed to process ${url}.`;
+        if (errorString.includes("No video could be found in this tweet")) {
+            userFacingError = "No video could be found in this Twitter/X link.";
+        } else if (errorString.includes("Requested format is not available")) {
+            userFacingError = "The requested video format is not available.";
+        } else if (errorString.includes("Private video") || errorString.includes("Login required")) {
+            userFacingError = "This video is private or requires login.";
+        }
+
+        return { success: false, error: userFacingError };
     }
 }
 
-function getVideoId(url: string) {
+function getVideoId(url: any) {
     const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
     const match = url.match(regExp);
     return (match && match[2].length === 11) ? match[2] : null;
