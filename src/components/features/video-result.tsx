@@ -49,6 +49,26 @@ export const VideoResult: React.FC<VideoResultProps> = ({ data }) => {
         return () => clearInterval(interval);
     }, [isTimerOpen, timeLeft]);
 
+    // Save to Recent Downloads History
+    useEffect(() => {
+        if (!data || !data.url) return;
+        try {
+            const historyStr = localStorage.getItem('tapdown_history');
+            let history = historyStr ? JSON.parse(historyStr) : [];
+
+            // Check if already in history by exactly matching URL
+            const exists = history.find((h: any) => h.url === data.url);
+            if (!exists) {
+                // Keep only the latest 10 items
+                history = [data, ...history].slice(0, 10);
+                localStorage.setItem('tapdown_history', JSON.stringify(history));
+                window.dispatchEvent(new Event('tapdown_history_updated'));
+            }
+        } catch (e) {
+            console.error("Failed to save history:", e);
+        }
+    }, [data]);
+
     const initiateDownload = (url: string, filename: string) => {
         const downloadUrl = `/api/download?url=${encodeURIComponent(url)}&filename=${filename}`;
         const link = document.createElement('a');

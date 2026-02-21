@@ -20,6 +20,23 @@ export function DownloaderInput({ onDownload, isLoading }: DownloaderInputProps)
     const [platform, setPlatform] = useState<string | null>(null)
 
     useEffect(() => {
+        // Intercept Android/iOS Web Share Target API intents
+        if (typeof window !== 'undefined') {
+            const params = new URLSearchParams(window.location.search);
+            const sharedText = params.get('text') || params.get('url');
+            if (sharedText) {
+                const urlMatch = sharedText.match(/https?:\/\/[^\s]+/);
+                if (urlMatch) {
+                    const extractedUrl = urlMatch[0];
+                    setUrl(extractedUrl);
+                    // Slight delay to allow animations to render before triggering the heavy download process
+                    setTimeout(() => onDownload(extractedUrl), 600);
+                }
+            }
+        }
+    }, [])
+
+    useEffect(() => {
         if (!url) {
             setPlatform(null)
             return
@@ -33,6 +50,25 @@ export function DownloaderInput({ onDownload, isLoading }: DownloaderInputProps)
         else if (lowerUrl.includes("twitter.com") || lowerUrl.includes("x.com")) setPlatform("twitter")
         else setPlatform("other")
     }, [url])
+
+    // Global Ctrl+V / Command+V interceptor
+    useEffect(() => {
+        const handleGlobalPaste = (e: ClipboardEvent) => {
+            // Ignore if user is already typing in an input or textarea
+            const activeTag = document.activeElement?.tagName.toLowerCase()
+            const activeType = (document.activeElement as HTMLInputElement)?.type
+            if (activeTag === 'textarea' || (activeTag === 'input' && activeType === 'url')) return
+
+            const pastedText = e.clipboardData?.getData('text')
+            if (pastedText && (pastedText.startsWith('http://') || pastedText.startsWith('https://'))) {
+                // We smoothly update the state, triggering the entrance animations
+                setUrl(pastedText.trim())
+            }
+        }
+
+        window.addEventListener('paste', handleGlobalPaste)
+        return () => window.removeEventListener('paste', handleGlobalPaste)
+    }, [])
 
     const handlePaste = async () => {
         try {

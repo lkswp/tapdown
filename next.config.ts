@@ -1,8 +1,19 @@
 import createNextIntlPlugin from 'next-intl/plugin';
+import withPWAInit from '@ducanh2912/next-pwa';
 
 const withNextIntl = createNextIntlPlugin();
 
-/** @type {import('next').NextConfig} */
-const nextConfig = {};
+const withPWA = withPWAInit({
+    dest: 'public',
+    disable: process.env.NODE_ENV === 'development',
+});
 
-export default withNextIntl(nextConfig);
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+    serverExternalPackages: ['yt-dlp-wrap'],
+    outputFileTracingIncludes: {
+        '/*': ['./bin/**/*'],
+    },
+};
+
+export default withNextIntl(withPWA(nextConfig));

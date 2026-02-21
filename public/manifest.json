@@ -1,0 +1,26 @@
+{
+    "name": "TapDown Universal Downloader",
+    "short_name": "TapDown",
+    "description": "Premium High-Speed Downloader for TikTok, Instagram, YouTube and Twitter.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#09090b",
+    "theme_color": "#fb3b53",
+    "icons": [
+        {
+            "src": "/logo.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "share_target": {
+        "action": "/",
+        "method": "GET",
+        "params": {
+            "title": "title",
+            "text": "text",
+            "url": "url"
+        }
+    }
+}
