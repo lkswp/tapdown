@@ -16,8 +16,9 @@ export function Header() {
     const t = useTranslations('Header')
 
     return (
-        <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-background/60 backdrop-blur-xl">
-            <div className="container mx-auto flex h-16 items-center justify-between px-4">
+        <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-background/40 backdrop-blur-2xl transition-all duration-300">
+            <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+            <div className="container mx-auto flex h-20 items-center justify-between px-4">
                 <Link href="/" className="flex items-center gap-2 group">
                     <div className="relative h-12 w-32 group-hover:scale-105 transition-transform">
                         <Image
@@ -31,14 +32,14 @@ export function Header() {
                 </Link>
 
                 {/* Centered Navigation for better alignment */}
-                <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-muted-foreground absolute left-1/2 -translate-x-1/2">
-                    <Link href="/" className="hover:text-foreground transition-colors hover:bg-white/5 px-4 py-2 rounded-full">{t('home')}</Link>
-                    <Link href="/pricing" className="hover:text-foreground transition-colors hover:bg-white/5 px-4 py-2 rounded-full flex items-center gap-2">
-                        <Sparkles className="w-3 h-3 text-primary animate-pulse" />
+                <nav className="hidden md:flex items-center gap-6 text-[15px] font-semibold text-muted-foreground absolute left-1/2 -translate-x-1/2">
+                    <Link href="/" className="hover:text-foreground transition-all duration-300 hover:bg-white/5 px-4 py-2 rounded-full">{t('home')}</Link>
+                    <Link href="/pricing" className="hover:text-foreground transition-all duration-300 hover:bg-white/5 px-4 py-2 rounded-full flex items-center gap-2">
+                        <Sparkles className="w-4 h-4 text-primary animate-pulse drop-shadow-[0_0_8px_rgba(255,50,150,0.8)]" />
                         {t('pricing')}
                     </Link>
-                    <Link href="/how-it-works" className="hover:text-foreground transition-colors hover:bg-white/5 px-4 py-2 rounded-full">{t('howItWorks')}</Link>
-                    <Link href="/contact" className="hover:text-foreground transition-colors hover:bg-white/5 px-4 py-2 rounded-full">{t('contact')}</Link>
+                    <Link href="/how-it-works" className="hover:text-foreground transition-all duration-300 hover:bg-white/5 px-4 py-2 rounded-full">{t('howItWorks')}</Link>
+                    <Link href="/contact" className="hover:text-foreground transition-all duration-300 hover:bg-white/5 px-4 py-2 rounded-full">{t('contact')}</Link>
                 </nav>
 
                 <div className="flex items-center gap-4">

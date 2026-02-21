@@ -95,11 +95,13 @@ export const VideoResult: React.FC<VideoResultProps> = ({ data }) => {
 
     return (
         <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="w-full max-w-2xl mx-auto mt-8"
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.6, type: "spring", bounce: 0.4 }}
+            className="w-full max-w-3xl mx-auto mt-12"
         >
-            <Card className="bg-background/40 backdrop-blur-xl border-white/10 overflow-hidden">
+            <Card className="glass-panel overflow-hidden relative group/card border-none glow-border">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 opacity-0 group-hover/card:opacity-100 transition-opacity duration-700 pointer-events-none" />
                 <CardContent className="p-6">
                     <div className="flex flex-col md:flex-row gap-6">
                         <div className="relative w-full md:w-48 aspect-[9/16] md:aspect-square rounded-xl overflow-hidden bg-muted group">
@@ -143,39 +145,45 @@ export const VideoResult: React.FC<VideoResultProps> = ({ data }) => {
                                 </h3>
                             </div>
 
-                            <div className="grid grid-cols-2 gap-3 mt-6">
+                            <div className="grid grid-cols-2 gap-4 mt-8">
                                 {/* Standard Video Download (Free with Timer, Pro Instant) */}
-                                <Button
-                                    onClick={() => handleDownloadClick('video', false)}
-                                    className="w-full gap-2 bg-primary hover:bg-primary/80 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-primary/25 relative overflow-hidden group/btn"
-                                >
-                                    <Video className="h-4 w-4" />
-                                    {t('downloadVideo')}
-                                </Button>
+                                <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                                    <Button
+                                        onClick={() => handleDownloadClick('video', false)}
+                                        className="w-full h-12 gap-2 bg-gradient-to-r from-primary to-primary/80 hover:from-primary hover:to-primary shadow-lg shadow-primary/25 relative overflow-hidden font-semibold text-[15px] rounded-xl"
+                                    >
+                                        <Video className="h-5 w-5" />
+                                        {t('downloadVideo')}
+                                    </Button>
+                                </motion.div>
 
                                 {/* HD Video Download (Pro Only) */}
-                                <Button
-                                    onClick={() => handleDownloadClick('video', true)}
-                                    className={`w-full gap-2 transition-all duration-300 hover:scale-105 border 
-                                        ${isPro
-                                            ? "bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white border-transparent shadow-lg shadow-purple-500/25"
-                                            : "bg-background/50 border-white/10 text-muted-foreground hover:bg-background/80"
-                                        }`}
-                                >
-                                    {isPro ? <Sparkles className="h-4 w-4" /> : <Lock className="h-4 w-4" />}
-                                    {t('downloadHD')}
-                                </Button>
+                                <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                                    <Button
+                                        onClick={() => handleDownloadClick('video', true)}
+                                        className={`w-full h-12 gap-2 text-[15px] font-semibold rounded-xl transition-all duration-300 border 
+                                            ${isPro
+                                                ? "bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white border-transparent shadow-lg shadow-purple-500/30"
+                                                : "bg-white/5 border-white/10 text-muted-foreground hover:bg-white/10 hover:text-foreground backdrop-blur-sm"
+                                            }`}
+                                    >
+                                        {isPro ? <Sparkles className="h-5 w-5 text-yellow-300" /> : <Lock className="h-5 w-5" />}
+                                        {t('downloadHD')}
+                                    </Button>
+                                </motion.div>
 
                                 {/* Audio Download */}
-                                <Button
-                                    variant="outline"
-                                    onClick={() => handleDownloadClick('audio', false)}
-                                    disabled={!data.audioUrl && data.platform === 'instagram'}
-                                    className="col-span-2 w-full gap-2 border-white/10 bg-white/5 hover:bg-white/20 hover:scale-[1.02] transition-all duration-300 hover:border-white/30"
-                                >
-                                    <Music className="h-4 w-4" />
-                                    {t('downloadAudio')}
-                                </Button>
+                                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="col-span-2">
+                                    <Button
+                                        variant="outline"
+                                        onClick={() => handleDownloadClick('audio', false)}
+                                        disabled={!data.audioUrl && data.platform === 'instagram'}
+                                        className="w-full h-12 gap-2 border-white/10 bg-white/5 hover:bg-white/15 transition-all duration-300 rounded-xl font-semibold text-[15px] hover:border-white/30 backdrop-blur-sm"
+                                    >
+                                        <Music className="h-5 w-5" />
+                                        {t('downloadAudio')}
+                                    </Button>
+                                </motion.div>
                             </div>
                         </div>
                     </div>

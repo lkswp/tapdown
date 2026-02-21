@@ -26,15 +26,9 @@ export default function HowItWorksPage() {
     ]
 
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center py-20 px-4">
-            {/* Background Effects */}
-            <div className="absolute inset-0 -z-10 overflow-hidden">
-                <div className="absolute top-1/4 left-1/4 h-96 w-96 bg-primary/20 rounded-full blur-[128px]" />
-                <div className="absolute bottom-1/4 right-1/4 h-96 w-96 bg-accent/20 rounded-full blur-[128px]" />
-            </div>
-
+        <div className="min-h-[80vh] flex flex-col items-center justify-center py-20 px-4 relative">
             <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
                 className="text-center mb-16 space-y-4"
@@ -49,21 +43,24 @@ export default function HowItWorksPage() {
                 {steps.map((step, index) => (
                     <motion.div
                         key={index}
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
+                        whileHover={{ y: -10 }}
                         transition={{ duration: 0.5, delay: index * 0.2 }}
-                        className="relative group"
+                        className="relative group h-full"
                     >
-                        <div className="absolute -inset-0.5 bg-gradient-to-b from-white/10 to-transparent rounded-3xl blur opacity-20 group-hover:opacity-40 transition duration-500" />
-                        <div className="relative h-full bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-8 flex flex-col items-center text-center space-y-6 hover:border-white/20 transition-colors">
-                            <div className="h-16 w-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center shadow-[0_0_15px_-5px_rgba(255,255,255,0.1)] group-hover:scale-110 transition-transform duration-300">
+                        <div className="absolute -inset-1 bg-gradient-to-b from-primary/20 to-accent/20 rounded-[2rem] blur-xl opacity-0 group-hover:opacity-50 transition duration-500" />
+                        <div className="relative h-full glass-panel glow-border rounded-[2rem] p-10 flex flex-col items-center text-center space-y-8">
+                            <div className="h-20 w-20 rounded-2xl bg-gradient-to-br from-white/10 to-transparent border border-white/20 flex items-center justify-center shadow-[0_0_20px_rgba(255,255,255,0.05)] group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
                                 {step.icon}
                             </div>
-                            <h3 className="text-2xl font-bold">{step.title}</h3>
-                            <p className="text-muted-foreground leading-relaxed">
-                                {step.desc}
-                            </p>
-                            <div className="absolute -top-4 -right-4 h-8 w-8 bg-white/5 border border-white/10 rounded-full flex items-center justify-center text-sm font-bold text-muted-foreground">
+                            <div className="space-y-4">
+                                <h3 className="text-2xl font-bold tracking-tight">{step.title}</h3>
+                                <p className="text-muted-foreground leading-relaxed font-medium">
+                                    {step.desc}
+                                </p>
+                            </div>
+                            <div className="absolute -top-4 -right-4 h-10 w-10 bg-gradient-to-br from-primary to-accent border border-white/20 rounded-full flex items-center justify-center text-md font-black text-white shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform">
                                 {index + 1}
                             </div>
                         </div>

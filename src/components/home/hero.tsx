@@ -6,6 +6,11 @@ import { useTranslations } from "next-intl"
 import dynamic from "next/dynamic"
 import BlurText from "@/components/reactbits/BlurText"
 import Magnet from "@/components/reactbits/Magnet"
+import { Instagram, Youtube, Twitter, Facebook } from "lucide-react"
+
+const TikTokIcon = () => (
+    <svg className="h-6 w-6 text-black dark:text-white group-hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.8)] transition-all" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" /></svg>
+)
 
 const Waves = dynamic(() => import('@/components/reactbits/Waves'), { ssr: false })
 
@@ -46,32 +51,48 @@ export function Hero() {
                     </span>
                 </h1>
 
-                <div className="w-full relative group max-w-2xl mx-auto mt-8">
+                <div className="w-full relative group max-w-3xl mx-auto mt-12">
                     {/* Impeccable Glow effect */}
-                    <div className="absolute -inset-1 bg-gradient-to-r from-primary via-accent to-primary rounded-3xl blur-xl opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-300 animate-pulse"></div>
-                    <div className="relative transform group-hover:-translate-y-1 transition-transform duration-300">
-                        <Downloader />
+                    <div className="absolute -inset-2 bg-gradient-to-r from-primary via-accent to-primary rounded-[2.5rem] blur-2xl opacity-30 group-hover:opacity-60 transition duration-1000 group-hover:duration-300 animate-pulse"></div>
+                    <div className="relative transform group-hover:-translate-y-1 transition-transform duration-500">
+                        <div className="glass-panel p-3 rounded-[2rem] glow-border">
+                            <Downloader />
+                        </div>
                     </div>
                 </div>
 
                 {/* Supported Platforms */}
-                <div className="pt-12">
-                    <p className="text-sm text-muted-foreground mb-6 font-medium uppercase tracking-wider">{t('supportedPlatforms')}</p>
-                    <div className="flex items-center justify-center gap-8">
-                        <Magnet magnetStrength={5}>
-                            <div className="flex flex-col items-center gap-2 opacity-60 hover:opacity-100 transition-opacity cursor-pointer">
-                                {/* Using text for now, could be replaced with proper SVGs */}
-                                <span className="text-xs font-bold">TikTok</span>
+                <div className="pt-16">
+                    <p className="text-sm text-muted-foreground mb-8 font-semibold uppercase tracking-widest">{t('supportedPlatforms')}</p>
+                    <div className="flex items-center justify-center gap-10">
+                        <Magnet magnetStrength={8}>
+                            <div className="group flex flex-col items-center gap-3 opacity-50 hover:opacity-100 transition-all cursor-pointer hover:scale-110">
+                                <TikTokIcon />
+                                <span className="text-xs font-bold tracking-wide group-hover:text-white transition-colors">TikTok</span>
                             </div>
                         </Magnet>
-                        <Magnet magnetStrength={5}>
-                            <div className="flex flex-col items-center gap-2 opacity-60 hover:opacity-100 transition-opacity cursor-pointer">
-                                <span className="text-xs font-bold">Instagram</span>
+                        <Magnet magnetStrength={8}>
+                            <div className="group flex flex-col items-center gap-3 opacity-50 hover:opacity-100 transition-all cursor-pointer hover:scale-110">
+                                <Instagram className="h-6 w-6 text-pink-500 drop-shadow-none group-hover:drop-shadow-[0_0_10px_rgba(236,72,153,0.8)] transition-all" />
+                                <span className="text-xs font-bold tracking-wide group-hover:text-pink-400 transition-colors">Instagram</span>
                             </div>
                         </Magnet>
-                        <Magnet magnetStrength={5}>
-                            <div className="flex flex-col items-center gap-2 opacity-60 hover:opacity-100 transition-opacity cursor-pointer">
-                                <span className="text-xs font-bold">YouTube</span>
+                        <Magnet magnetStrength={8}>
+                            <div className="group flex flex-col items-center gap-3 opacity-50 hover:opacity-100 transition-all cursor-pointer hover:scale-110">
+                                <Youtube className="h-6 w-6 text-red-500 drop-shadow-none group-hover:drop-shadow-[0_0_10px_rgba(239,68,68,0.8)] transition-all" />
+                                <span className="text-xs font-bold tracking-wide group-hover:text-red-400 transition-colors">YouTube</span>
+                            </div>
+                        </Magnet>
+                        <Magnet magnetStrength={8}>
+                            <div className="group flex flex-col items-center gap-3 opacity-50 hover:opacity-100 transition-all cursor-pointer hover:scale-110">
+                                <Twitter className="h-6 w-6 text-sky-500 drop-shadow-none group-hover:drop-shadow-[0_0_10px_rgba(14,165,233,0.8)] transition-all" />
+                                <span className="text-xs font-bold tracking-wide group-hover:text-sky-400 transition-colors">Twitter</span>
+                            </div>
+                        </Magnet>
+                        <Magnet magnetStrength={8}>
+                            <div className="group flex flex-col items-center gap-3 opacity-50 hover:opacity-100 transition-all cursor-pointer hover:scale-110">
+                                <Facebook className="h-6 w-6 text-blue-600 drop-shadow-none group-hover:drop-shadow-[0_0_10px_rgba(37,99,235,0.8)] transition-all" />
+                                <span className="text-xs font-bold tracking-wide group-hover:text-blue-500 transition-colors">Facebook</span>
                             </div>
                         </Magnet>
                     </div>

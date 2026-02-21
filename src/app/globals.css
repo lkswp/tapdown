@@ -131,6 +131,14 @@
     @apply bg-background/60 backdrop-blur-xl border border-white/10 dark:border-white/5;
   }
 
+  .glass-panel {
+    @apply bg-background/40 backdrop-blur-2xl border border-white/10 shadow-2xl;
+  }
+
+  .glow-border {
+    @apply relative before:absolute before:-inset-[1px] before:rounded-[inherit] before:bg-gradient-to-r before:from-primary/50 before:via-accent/50 before:to-primary/50 before:-z-10 before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-500;
+  }
+
   .text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-[oklch(0.65_0.25_10)] to-[oklch(0.6_0.25_20)];
     /* Pink to Red */

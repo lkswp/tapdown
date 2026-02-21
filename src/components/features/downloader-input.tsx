@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ArrowRight, Link2, Loader2, Instagram, Facebook, Youtube, Twitter } from "lucide-react"
@@ -60,40 +61,68 @@ export function DownloaderInput({ onDownload, isLoading }: DownloaderInputProps)
     }
 
     return (
-        <form onSubmit={handleSubmit} className="relative w-full max-w-2xl mx-auto">
-            <div className="relative flex items-center group">
-                <div className="absolute left-4 transition-colors duration-300 z-10">
-                    {getPlatformIcon()}
-                </div>
-                <Input
-                    type="url"
-                    placeholder={t('placeholder')}
-                    className="h-14 pl-12 pr-32 rounded-2xl bg-secondary/50 border-white/10 backdrop-blur-md text-lg focus-visible:ring-primary/50 transition-all font-medium group-hover:bg-secondary/70"
-                    value={url}
-                    onChange={(e) => setUrl(e.target.value)}
-                />
-                <div className="absolute right-2 flex items-center gap-2">
-                    {!url && (
-                        <Button
-                            type="button"
-                            variant="ghost"
-                            size="sm"
-                            className="text-muted-foreground hover:text-foreground hidden sm:flex"
-                            onClick={handlePaste}
+        <form onSubmit={handleSubmit} className="relative w-full max-w-3xl mx-auto">
+            <motion.div
+                className="relative flex items-center group/input rounded-2xl glow-border"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+            >
+                <div className="absolute left-5 z-20 transition-all duration-300 transform group-hover/input:scale-110">
+                    <AnimatePresence mode="popLayout">
+                        <motion.div
+                            key={platform || "default"}
+                            initial={{ opacity: 0, scale: 0.5, rotate: -45 }}
+                            animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                            exit={{ opacity: 0, scale: 0.5, rotate: 45 }}
+                            transition={{ type: "spring", stiffness: 300, damping: 20 }}
                         >
-                            {t('paste')}
-                        </Button>
-                    )}
+                            {getPlatformIcon()}
+                        </motion.div>
+                    </AnimatePresence>
+                </div>
+
+                <div className="w-full relative glass-panel rounded-2xl overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-primary/50 focus-within:shadow-[0_0_30px_rgba(var(--primary),0.3)]">
+                    <Input
+                        type="url"
+                        placeholder={t('placeholder')}
+                        className="h-16 pl-14 pr-36 rounded-2xl bg-transparent border-none text-lg font-medium shadow-none focus-visible:ring-0 group-hover/input:bg-white/5 transition-all text-foreground placeholder:text-muted-foreground/70"
+                        value={url}
+                        onChange={(e) => setUrl(e.target.value)}
+                    />
+                </div>
+
+                <div className="absolute right-2 flex items-center gap-2 z-20">
+                    <AnimatePresence>
+                        {!url && (
+                            <motion.div
+                                initial={{ opacity: 0, x: 10 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, scale: 0.9 }}
+                            >
+                                <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="sm"
+                                    className="text-muted-foreground hover:text-foreground hidden sm:flex hover:bg-white/10 rounded-xl transition-all font-semibold"
+                                    onClick={handlePaste}
+                                >
+                                    {t('paste')}
+                                </Button>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+
                     <Button
                         type="submit"
                         size="icon"
-                        className="h-10 w-10 rounded-xl bg-primary hover:bg-primary/90 transition-all shadow-[0_0_20px_-5px_var(--primary)]"
+                        className="h-12 w-12 rounded-xl bg-gradient-to-br from-primary to-accent hover:from-primary/90 hover:to-accent/90 transition-all shadow-[0_0_20px_-5px_var(--primary)] hover:scale-105 hover:shadow-[0_0_30px_0_var(--accent)] text-white"
                         disabled={isLoading || !url}
                     >
-                        {isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : <ArrowRight className="h-5 w-5" />}
+                        {isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : <ArrowRight className="h-6 w-6" />}
                     </Button>
                 </div>
-            </div>
+            </motion.div>
         </form>
     )
 }
