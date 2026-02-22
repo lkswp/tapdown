@@ -13,15 +13,15 @@ const TikTokIcon = () => (
     <svg className="h-6 w-6 text-black dark:text-white group-hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.8)] transition-all" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" /></svg>
 )
 
-const Waves = dynamic(() => import('@/components/reactbits/Waves'), { ssr: false })
+import { AuroraBackground } from "@/components/ui/aurora-background"
 
 export function Hero() {
     const t = useTranslations('Hero')
 
     return (
         <section className="relative flex flex-col items-center justify-center min-h-[90vh] px-4 overflow-hidden">
-            {/* Reactbits Waves Background */}
-            <Waves />
+            {/* High-Performance Aurora Background */}
+            <AuroraBackground className="absolute inset-0 pointer-events-none -z-20 h-full w-full" />
 
             {/* Overlay to ensure text readability if needed */}
             <div className="absolute inset-0 bg-black/40 pointer-events-none -z-10" />
@@ -54,7 +54,7 @@ export function Hero() {
 
                 <div className="w-full relative group max-w-3xl mx-auto mt-12">
                     {/* Impeccable Glow effect */}
-                    <div className="absolute -inset-2 bg-gradient-to-r from-primary via-accent to-primary rounded-[2.5rem] blur-2xl opacity-30 group-hover:opacity-60 transition duration-1000 group-hover:duration-300 animate-pulse"></div>
+                    <div className="absolute -inset-2 bg-gradient-to-r from-primary via-accent to-primary rounded-[2.5rem] blur-2xl opacity-30 group-hover:opacity-60 transition duration-1000 group-hover:duration-300"></div>
                     <div className="relative transform group-hover:-translate-y-1 transition-transform duration-500">
                         <div className="glass-panel p-3 rounded-[2rem] glow-border">
                             <Downloader />

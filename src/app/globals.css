@@ -164,4 +164,32 @@
       cursor: none;
     }
   }
+
+  @keyframes aurora {
+    from {
+      background-position: 50% 50%, 50% 50%;
+    }
+
+    to {
+      background-position: 350% 50%, 350% 50%;
+    }
+  }
+
+  @keyframes aurora-2 {
+    from {
+      background-position: 50% 50%, 50% 50%;
+    }
+
+    to {
+      background-position: -250% 50%, -250% 50%;
+    }
+  }
+
+  .animate-aurora {
+    animation: aurora 60s linear infinite;
+  }
+
+  .animate-aurora-2 {
+    animation: aurora-2 60s linear infinite;
+  }
 }

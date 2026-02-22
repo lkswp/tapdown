@@ -27,7 +27,7 @@ const ParticleWave = () => {
         };
     }, []);
 
-    const count = 3000; // Increased count for density
+    const count = 1000; // Decreased count for better FPS
     const positions = useMemo(() => {
         const positions = new Float32Array(count * 3);
         for (let i = 0; i < count; i++) {
@@ -91,7 +91,7 @@ const ParticleWave = () => {
 const Waves = () => {
     return (
         <div className="fixed inset-0 -z-1 w-full h-full bg-black pointer-events-none">
-            <Canvas camera={{ position: [0, 5, 10], fov: 60 }} style={{ pointerEvents: 'auto' }}>
+            <Canvas camera={{ position: [0, 5, 10], fov: 60 }} dpr={[1, 1.5]} style={{ pointerEvents: 'auto' }}>
                 <ParticleWave />
             </Canvas>
         </div>
