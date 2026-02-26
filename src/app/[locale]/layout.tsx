@@ -28,6 +28,7 @@ import { CustomCursor } from "@/components/ui/custom-cursor";
 
 import { ClerkProvider } from "@clerk/nextjs";
 import { ptBR, esES, enUS } from "@clerk/localizations";
+import { Analytics } from "@vercel/analytics/next";
 
 const clerkLocalizations = {
   en: enUS,
@@ -83,6 +84,7 @@ export default async function RootLayout({
               <Toaster />
             </ThemeProvider>
           </NextIntlClientProvider>
+          <Analytics />
         </body>
       </html>
     </ClerkProvider>
